@@ -7,7 +7,11 @@ pros::Motor kicker2(17, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGR
 
 // Pneumatics
 
-
+// Pneumatics
+ez::Piston left_wing('B');
+ez::Piston right_wing('C');
+ez::Piston back_wing('A');
+ez::Piston hang('D');
 
 // Chassis constructor
 ez::Drive chassis (
@@ -52,10 +56,10 @@ void initialize() {
     // Auton("Combine all 3 movements", combining_movements),
     // Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
 
-    Auton("Close AWP", close_awp),
-    Auton("Close Score", close_score),
-    Auton("Far 6Ball", far_6ball),
-    Auton("Far AWP", far_awp),
+    // Auton("Close AWP", close_awp),
+    // Auton("Close Score", close_score),
+    // Auton("Far 6Ball", far_6ball),
+    // Auton("Far AWP", far_awp),
   });
 
   // Initialize chassis and auton selector
@@ -113,7 +117,6 @@ void autonomous() {
 }
 
 
-
 /**
  * Runs the operator control code. This function will be started in its own task
  * with the default priority and stack size whenever the robot is enabled via
@@ -149,15 +152,40 @@ void opcontrol() {
     if (master.get_digital_new_press(DIGITAL_B)) 
       autonomous();
 
-    chassis.opcontrol_tank(); // Tank control
-    // chassis.opcontrol_arcade_standard(ez::SPLIT); // Standard split arcade
-    // chassis.opcontrol_arcade_standard(ez::SINGLE); // Standard single arcade
-    // chassis.opcontrol_arcade_flipped(ez::SPLIT); // Flipped split arcade
-    // chassis.opcontrol_arcade_flipped(ez::SINGLE); // Flipped single arcade
+    // chassis.opcontrol_tank(); // Tank control
+    chassis.opcontrol_arcade_standard(ez::SPLIT); // Standard split arcade
 
-    // . . .
-    // Put more user control code here!
-    // . . .
+    // pneumatics
+    if (master.get_digital_new_press(DIGITAL_RIGHT)) {
+      left_wing.set(true);
+    }
+    if (master.get_digital_new_press(DIGITAL_Y)) {
+      right_wing.set(true);
+    }
+    if (master.get_digital_new_press(DIGITAL_L1)) {
+      back_wing.set(true);
+    }
+    if (master.get_digital_new_press(DIGITAL_A)) {
+      hang.set(true);
+    }
+
+    // Read joystick inputs for intake control
+    if (master.get_digital(DIGITAL_R1)) {
+        intake.move_velocity(200); 
+    } else if (master.get_digital(DIGITAL_R2)) {
+        intake.move_velocity(-200);
+    } else {
+        intake.move_velocity(0);
+    }
+
+    // Read joystick inputs for kicker control
+    if (master.get_digital(DIGITAL_L2)) {
+        kicker1.move_velocity(200);
+        kicker2.move_velocity(200);
+    } else {
+        kicker1.move_velocity(0);
+        kicker2.move_velocity(0);
+    }
 
     pros::delay(ez::util::DELAY_TIME); // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
