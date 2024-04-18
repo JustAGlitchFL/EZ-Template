@@ -52,7 +52,7 @@ void initialize() {
     // Auton("Combine all 3 movements", combining_movements),
     // Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
 
-    Auton("")
+    Auton("Close AWP", close_awp),
   });
 
   // Initialize chassis and auton selector
