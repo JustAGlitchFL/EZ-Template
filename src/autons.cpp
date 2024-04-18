@@ -26,6 +26,24 @@ void default_constants() {
   chassis.slew_drive_constants_set(7_in, 80);
 }
 
+// Auton Functions
+
+void close_awp() {
+  NULL;
+}
+
+void close_score() {
+  NULL;
+}
+
+void far_6ball() {
+  NULL;
+}
+
+void far_awp() {
+  NULL;
+}
+
 /* examples
 ///
 // Drive Example

@@ -56,10 +56,10 @@ void initialize() {
     // Auton("Combine all 3 movements", combining_movements),
     // Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
 
-    // Auton("Close AWP", close_awp),
-    // Auton("Close Score", close_score),
-    // Auton("Far 6Ball", far_6ball),
-    // Auton("Far AWP", far_awp),
+    Auton("Close AWP", close_awp),
+    Auton("Close Score", close_score),
+    Auton("Far 6Ball", far_6ball),
+    Auton("Far AWP", far_awp),
   });
 
   // Initialize chassis and auton selector
@@ -156,15 +156,23 @@ void opcontrol() {
     chassis.opcontrol_arcade_standard(ez::SPLIT); // Standard split arcade
 
     // pneumatics
-    if (master.get_digital_new_press(DIGITAL_RIGHT)) {
+    if (master.get_digital(DIGITAL_RIGHT)) {
       left_wing.set(true);
+    } else {
+      left_wing.set(false);
     }
-    if (master.get_digital_new_press(DIGITAL_Y)) {
+    if (master.get_digital(DIGITAL_Y)) {
       right_wing.set(true);
+    } else {
+      right_wing.set(false);
     }
-    if (master.get_digital_new_press(DIGITAL_L1)) {
+    if (master.get_digital(DIGITAL_L1)) {
       back_wing.set(true);
+    } else {
+      back_wing.set(false);
     }
+
+
     if (master.get_digital_new_press(DIGITAL_A)) {
       hang.set(true);
     }
@@ -181,12 +189,17 @@ void opcontrol() {
     // Read joystick inputs for kicker control
     if (master.get_digital(DIGITAL_L2)) {
         kicker1.move_velocity(200);
-        kicker2.move_velocity(200);
+        kicker2.move_velocity(-200);
     } else {
         kicker1.move_velocity(0);
         kicker2.move_velocity(0);
     }
-
+    // hang
+    if (master.get_digital_new_press(DIGITAL_LEFT)) {
+      hang.set(false);
+      kicker1.move_velocity(-200);
+      kicker2.move_velocity(200);
+    }
     pros::delay(ez::util::DELAY_TIME); // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
 }

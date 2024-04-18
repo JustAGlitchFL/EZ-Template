@@ -13,3 +13,8 @@ void combining_movements();
 void interfered_example();
 
 void default_constants();
+
+void close_awp();
+void close_score();
+void far_6ball();
+void far_awp();
