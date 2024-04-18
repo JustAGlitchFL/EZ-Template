@@ -53,6 +53,9 @@ void initialize() {
     // Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
 
     Auton("Close AWP", close_awp),
+    Auton("Close Score", close_score),
+    Auton("Far 6Ball", far_6ball),
+    Auton("Far AWP", far_awp),
   });
 
   // Initialize chassis and auton selector
