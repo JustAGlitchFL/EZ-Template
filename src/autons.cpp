@@ -26,7 +26,7 @@ void default_constants() {
   chassis.slew_drive_constants_set(7_in, 80);
 }
 
-
+/* examples
 ///
 // Drive Example
 ///
@@ -194,3 +194,4 @@ void interfered_example() {
 // . . .
 // Make your own autonomous functions here!
 // . . .
+*/

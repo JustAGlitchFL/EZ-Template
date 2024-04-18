@@ -1,69 +1,58 @@
 #include "main.h"
 
-/////
-// For installation, upgrading, documentations and tutorials, check out our website!
-// https://ez-robotics.github.io/EZ-Template/
-/////
+// Motor definitions
+pros::Motor intake(6, pros::E_MOTOR_GEAR_200, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor kicker1(16, pros::E_MOTOR_GEAR_200, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor kicker2(17, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
+
+// Pneumatics
+
 
 
 // Chassis constructor
 ez::Drive chassis (
   // Left Chassis Ports (negative port will reverse it!)
   //   the first port is used as the sensor
-  {-7, -6, -8, 20}
+  {-8, 10, -9}
 
   // Right Chassis Ports (negative port will reverse it!)
   //   the first port is used as the sensor
-  ,{-12, 2, 5, 11}
+  ,{18, -20, 19}
 
   // IMU Port
-  ,15
+  ,5
 
-  // Wheel Diameter (Remember, 4" wheels without screw holes are actually 4.125!)
-  ,4.0
+  // Wheel Diameter
+  ,3.25
 
   // Cartridge RPM
-  ,400
+  ,600
 
   // External Gear Ratio (MUST BE DECIMAL) This is WHEEL GEAR / MOTOR GEAR
-  // eg. if your drive is 84:36 where the 36t is powered, your RATIO would be 84/36 which is 2.333
-  // eg. if your drive is 36:60 where the 60t is powered, your RATIO would be 36/60 which is 0.6
-  ,1.0
+  ,1.666
 );
 
 
 
-/**
- * Runs initialization code. This occurs as soon as the program is started.
- *
- * All other competition modes are blocked by initialize; it is recommended
- * to keep execution time for this mode under a few seconds.
- */
 void initialize() {
-  // Print our branding over your terminal :D
-  ez::ez_template_print();
   
   pros::delay(500); // Stop the user from doing anything while legacy ports configure
 
   // Configure your chassis controls
-  chassis.opcontrol_curve_buttons_toggle(true); // Enables modifying the controller curve with buttons on the joysticks
-  chassis.opcontrol_drive_activebrake_set(0); // Sets the active brake kP. We recommend 2.
-  chassis.opcontrol_curve_default_set(0, 0); // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)  
+  chassis.opcontrol_curve_default_set(4, 4); // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)  
   default_constants(); // Set the drive to your own constants from autons.cpp!
-
-  // These are already defaulted to these buttons, but you can change the left/right curve buttons here!
-  // chassis.opcontrol_curve_buttons_left_set (pros::E_CONTROLLER_DIGITAL_LEFT, pros::E_CONTROLLER_DIGITAL_RIGHT); // If using tank, only the left side is used. 
-  // chassis.opcontrol_curve_buttons_right_set(pros::E_CONTROLLER_DIGITAL_Y,    pros::E_CONTROLLER_DIGITAL_A);
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
-    Auton("Example Drive\n\nDrive forward and come back.", drive_example),
-    Auton("Example Turn\n\nTurn 3 times.", turn_example),
-    Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
-    Auton("Drive and Turn\n\nSlow down during drive.", wait_until_change_speed),
-    Auton("Swing Example\n\nSwing in an 'S' curve", swing_example),
-    Auton("Combine all 3 movements", combining_movements),
-    Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
+    // Auton("Example Drive\n\nDrive forward and come back.", drive_example),
+    // Auton("Example Turn\n\nTurn 3 times.", turn_example),
+    // Auton("Drive and Turn\n\nDrive forward, turn, come back. ", drive_and_turn),
+    // Auton("Drive and Turn\n\nSlow down during drive.", wait_until_change_speed),
+    // Auton("Swing Example\n\nSwing in an 'S' curve", swing_example),
+    // Auton("Combine all 3 movements", combining_movements),
+    // Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
+
+    Auton("")
   });
 
   // Initialize chassis and auton selector
@@ -151,12 +140,11 @@ void opcontrol() {
       if (master.get_digital_new_press(DIGITAL_X)) 
         chassis.pid_tuner_toggle();
         
-      // Trigger the selected autonomous routine
-      if (master.get_digital_new_press(DIGITAL_B)) 
-        autonomous();
-
       chassis.pid_tuner_iterate(); // Allow PID Tuner to iterate
     } 
+  // Trigger the selected autonomous routine
+    if (master.get_digital_new_press(DIGITAL_B)) 
+      autonomous();
 
     chassis.opcontrol_tank(); // Tank control
     // chassis.opcontrol_arcade_standard(ez::SPLIT); // Standard split arcade
