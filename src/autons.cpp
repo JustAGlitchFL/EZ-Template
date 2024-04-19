@@ -28,21 +28,21 @@ void default_constants() {
 
 // Auton Functions
 
-void close_awp() {
-  NULL;
-}
+// void close_awp() {
+//   NULL;
+// }
 
-void close_score() {
-  NULL;
-}
+// void close_score() {
+//   NULL;
+// }
 
-void far_6ball() {
-  NULL;
-}
+// void far_6ball() {
+//   NULL;
+// }
 
-void far_awp() {
-  NULL;
-}
+// void far_awp() {
+//   NULL;
+// }
 
 /* examples
 ///
