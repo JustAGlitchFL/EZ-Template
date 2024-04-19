@@ -19,9 +19,9 @@ void default_constants() {
   chassis.pid_turn_constants_set(3, 0, 20);
   chassis.pid_swing_constants_set(5, 0, 30);
 
-  chassis.pid_turn_exit_condition_set(300_ms, 3_deg, 500_ms, 7_deg, 750_ms, 750_ms);
-  chassis.pid_swing_exit_condition_set(300_ms, 3_deg, 500_ms, 7_deg, 750_ms, 750_ms);
-  chassis.pid_drive_exit_condition_set(300_ms, 1_in, 500_ms, 3_in, 750_ms, 750_ms);
+  chassis.pid_turn_exit_condition_set(100_ms, 3_deg, 300_ms, 7_deg, 500_ms, 750_ms);
+  chassis.pid_swing_exit_condition_set(100_ms, 3_deg, 300_ms, 7_deg, 500_ms, 750_ms);
+  chassis.pid_drive_exit_condition_set(100_ms, 1_in, 300_ms, 3_in, 500_ms, 500_ms);
 
   chassis.slew_drive_constants_set(7_in, 80);
 }
@@ -215,9 +215,10 @@ void interfered_example() {
 */
 
 void test_auton() {
-  chassis.pid_drive_set(22_in, DRIVE_SPEED, true);
-  chassis.pid_wait_until(20);
+  chassis.pid_drive_set(12_in, DRIVE_SPEED, true);
+  chassis.pid_wait_until(10);
+  chassis.pid_swing_set(ez::LEFT_SWING, 60_deg, SWING_SPEED, 60);
+  chassis.pid_wait_until(45);
   chassis.pid_swing_set(ez::LEFT_SWING, 45_deg, SWING_SPEED, 45);
-  chassis.pid_wait_until(40);
   chassis.pid_drive_set(12_in, DRIVE_SPEED, true);
 }

@@ -46,6 +46,8 @@ void initialize() {
   chassis.opcontrol_curve_default_set(4, 4); // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)  
   default_constants(); // Set the drive to your own constants from autons.cpp!
 
+  sylib::initialize();
+
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
     // Auton("Example Drive\n\nDrive forward and come back.", drive_example),
