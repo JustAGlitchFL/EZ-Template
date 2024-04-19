@@ -219,4 +219,5 @@ void test_auton() {
   chassis.pid_wait_until(20);
   chassis.pid_swing_set(ez::LEFT_SWING, 45_deg, SWING_SPEED, 45);
   chassis.pid_wait_until(40);
+  chassis.pid_drive_set(24_in, DRIVE_SPEED, true);
 }
