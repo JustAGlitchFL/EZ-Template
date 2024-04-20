@@ -240,10 +240,7 @@ void interfered_example() {
 */
 
 void test_auton() {
-  chassis.pid_drive_set(12_in, DRIVE_SPEED, true);
-  chassis.pid_wait_until(10);
-  chassis.pid_swing_set(ez::LEFT_SWING, 60_deg, SWING_SPEED, 60);
-  chassis.pid_wait_until(45);
-  chassis.pid_swing_set(ez::LEFT_SWING, 45_deg, SWING_SPEED, 45);
-  chassis.pid_drive_set(12_in, DRIVE_SPEED, true);
+  drive(12_in, DRIVE_SPEED, true);
+  turn(45_deg, TURN_SPEED);
+  drive(12_in, DRIVE_SPEED, true);
 }
