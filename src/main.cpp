@@ -182,8 +182,6 @@ void opcontrol() {
         
     //   chassis.pid_tuner_iterate(); // Allow PID Tuner to iterate
     // } 
-
-    // chassis.opcontrol_tank();
     }
 
     chassis.opcontrol_arcade_standard(ez::SPLIT);
