@@ -13,6 +13,11 @@ ez::Piston right_wing('C');
 ez::Piston back_wing('A');
 ez::Piston hang('D');
 
+auto leftOuterLEDs = sylib::Addrled(22, 5, 17);
+auto leftInnerLEDs = sylib::Addrled(22, 6, 16);
+auto rightOuterLEDs = sylib::Addrled(22, 8, 17);
+auto rightInnerLEDs = sylib::Addrled(22, 7, 16);
+
 // Chassis constructor
 ez::Drive chassis (
   // Left Chassis Ports (negative port will reverse it!)
@@ -36,6 +41,26 @@ ez::Drive chassis (
   ,1.666
 );
 
+void ledInitialize() {
+  leftOuterLEDs.gradient(0x5EE3FE, 0xCD29FF);
+  leftInnerLEDs.gradient(0x5EE3FE, 0xCD29FF);
+  rightOuterLEDs.gradient(0x5EE3FE, 0xCD29FF);
+  rightInnerLEDs.gradient(0x5EE3FE, 0xCD29FF);
+}
+
+void ledCycle() {
+  leftOuterLEDs.cycle(*leftOuterLEDs, 15);
+  leftInnerLEDs.cycle(*leftInnerLEDs, 15);
+  rightInnerLEDs.cycle(*rightInnerLEDs, 15);
+  rightOuterLEDs.cycle(*rightOuterLEDs, 15);
+}
+
+void ledPulse(int hexCode) {
+  leftOuterLEDs.pulse(hexCode, 2, 10);
+  leftInnerLEDs.pulse(hexCode, 2, 10);
+  rightOuterLEDs.pulse(hexCode, 2, 10);
+  rightInnerLEDs.pulse(hexCode, 2, 10);
+}
 
 
 void initialize() {
@@ -47,6 +72,8 @@ void initialize() {
   default_constants(); // Set the drive to your own constants from autons.cpp!
 
   sylib::initialize();
+
+  ledInitialize();
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
@@ -76,6 +103,9 @@ void initialize() {
  */
 void disabled() {
   // . . .
+
+  ledInitialize();
+
 }
 
 
@@ -112,6 +142,8 @@ void autonomous() {
   chassis.drive_sensor_reset(); // Reset drive sensors to 0
   chassis.drive_brake_set(MOTOR_BRAKE_HOLD); // Set motors to hold.  This helps autonomous consistency
 
+  ledCycle();
+
   ez::as::auton_selector.selected_auton_call(); // Calls selected auton from autonomous selector
 }
 
@@ -132,7 +164,8 @@ void autonomous() {
 void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
-  
+  ledInitialize();
+
   while (true) {
     
     // PID Tuner
@@ -157,23 +190,30 @@ void opcontrol() {
     // pneumatics
     if (master.get_digital(DIGITAL_RIGHT)) {
       left_wing.set(true);
+      ledPulse(0x00FF00);
     } else {
       left_wing.set(false);
+      ledPulse(0xff0000);
     }
     if (master.get_digital(DIGITAL_Y)) {
       right_wing.set(true);
+      ledPulse(0x00FF00);
     } else {
       right_wing.set(false);
+      ledPulse(0xff0000);
     }
     if (master.get_digital(DIGITAL_L1)) {
       back_wing.set(true);
+      ledPulse(0x00FF00);
     } else {
       back_wing.set(false);
+      ledPulse(0xff0000);
     }
 
 
     if (master.get_digital_new_press(DIGITAL_A)) {
       hang.set(true);
+      ledPulse(0x00FF00);
     }
 
     // Read joystick inputs for intake control
@@ -189,15 +229,18 @@ void opcontrol() {
     if (master.get_digital(DIGITAL_L2)) {
         kicker1.move_velocity(200);
         kicker2.move_velocity(-200);
+        ledPulse(0x00FF00);
     } else {
         kicker1.move_velocity(0);
         kicker2.move_velocity(0);
+        ledPulse(0xff0000);
     }
     // hang
     if (master.get_digital_new_press(DIGITAL_LEFT)) {
       hang.set(false);
       kicker1.move_velocity(-200);
       kicker2.move_velocity(200);
+      ledPulse(0x00FF00);
     }
     pros::delay(ez::util::DELAY_TIME); // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
