@@ -184,9 +184,11 @@ void opcontrol() {
     // } 
 
     // chassis.opcontrol_tank();
+    }
+
     chassis.opcontrol_arcade_standard(ez::SPLIT);
-    
-    if (master.get_digital_new_press(DIGITAL_X) && LEDToggle == false) {
+
+      if (master.get_digital_new_press(DIGITAL_X) && LEDToggle == false) {
         pros::delay(100);
         leftInnerLEDs.set_all(0x000FF);
         leftOuterLEDs.set_all(0x000FF);
@@ -201,7 +203,6 @@ void opcontrol() {
         ledInitialize();
         LEDToggle = false;
       }
-    }
 
   // Trigger the selected autonomous routine
     if (master.get_digital_new_press(DIGITAL_B))  {
