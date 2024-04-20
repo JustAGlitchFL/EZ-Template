@@ -37,6 +37,8 @@
 #include "api.h"
 #include "sylib/sylib.hpp"
 #include "okapi/api.hpp"
+#include "EZ-Template/api.hpp"
+#include "autons.hpp"
 
 /**
  * You should add more #includes here
