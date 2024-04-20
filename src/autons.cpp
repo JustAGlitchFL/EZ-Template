@@ -42,7 +42,7 @@ void turn(double angle, int speed, bool slew = false) {
 }
 
 void drive(double distance, int speed, bool slew = false) {
-  if (chassis.aPID.target != last_set_angle) {
+  if (chassis.turnPID.target != last_set_angle) {
     chassis.pid_drive_toggle(false);
     chassis.pid_turn_set(last_set_angle, 0, false);
   }
@@ -240,7 +240,7 @@ void interfered_example() {
 */
 
 void test_auton() {
-  drive(12_in, DRIVE_SPEED, true);
-  turn(45_deg, TURN_SPEED);
-  drive(12_in, DRIVE_SPEED, true);
+  drive(12, DRIVE_SPEED, true);
+  turn(45, TURN_SPEED);
+  drive(12, DRIVE_SPEED, true);
 }
