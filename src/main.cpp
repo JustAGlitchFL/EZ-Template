@@ -181,8 +181,9 @@ void opcontrol() {
       chassis.pid_tuner_iterate(); // Allow PID Tuner to iterate
     } 
   // Trigger the selected autonomous routine
-    if (master.get_digital_new_press(DIGITAL_B)) 
+    if (master.get_digital_new_press(DIGITAL_B))  {
       autonomous();
+      }
 
     // chassis.opcontrol_tank(); // Tank control
     chassis.opcontrol_arcade_standard(ez::SPLIT); // Standard split arcade
