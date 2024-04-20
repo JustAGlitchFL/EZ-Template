@@ -175,18 +175,19 @@ void opcontrol() {
       //  When enabled:
       //  * use A and Y to increment / decrement the constants
       //  * use the arrow keys to navigate the constants
-      if (master.get_digital_new_press(DIGITAL_X)) 
-        chassis.pid_tuner_toggle();
+    //   if (master.get_digital_new_press(DIGITAL_X)) 
+    //     chassis.pid_tuner_toggle();
         
-      chassis.pid_tuner_iterate(); // Allow PID Tuner to iterate
-    } 
+    //   chassis.pid_tuner_iterate(); // Allow PID Tuner to iterate
+    // } 
+
+    // chassis.opcontrol_tank(); // Tank control
+    chassis.opcontrol_arcade_standard(ez::SPLIT); // Standard split arcade
+
   // Trigger the selected autonomous routine
     if (master.get_digital_new_press(DIGITAL_B))  {
       autonomous();
       }
-
-    // chassis.opcontrol_tank(); // Tank control
-    chassis.opcontrol_arcade_standard(ez::SPLIT); // Standard split arcade
 
     // pneumatics
     if (master.get_digital(DIGITAL_RIGHT)) {
@@ -244,5 +245,6 @@ void opcontrol() {
       ledPulse(0x00FF00);
     }
     pros::delay(ez::util::DELAY_TIME); // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
+  }
   }
 }
