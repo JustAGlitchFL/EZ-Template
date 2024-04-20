@@ -198,7 +198,10 @@ void opcontrol() {
         rightInnerLEDs.set_all(0xff0000);
         rightOuterLEDs.set_all(0xff0000);
         } else if (master.get_digital_new_press(DIGITAL_X) && LEDToggle == true) {
-        ledInitialize();
+        leftOuterLEDs.gradient(0x5EE3FE, 0xCD29FF);
+        leftInnerLEDs.gradient(0x5EE3FE, 0xCD29FF);
+        rightOuterLEDs.gradient(0x5EE3FE, 0xCD29FF);
+        rightInnerLEDs.gradient(0x5EE3FE, 0xCD29FF);
         LEDToggle = false;
       }
 
