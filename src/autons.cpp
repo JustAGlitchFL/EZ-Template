@@ -26,6 +26,31 @@ void default_constants() {
   chassis.slew_drive_constants_set(7_in, 80);
 }
 
+double last_set_angle = 0.0;
+double added_angle = 3.0;
+double added_distance = 3.0;
+void swing(ez::e_swing swing_type, double angle, int speed, int curve, bool slew = false) {
+  last_set_angle = angle;
+  chassis.pid_swing_set(swing_type, angle + added_angle, speed, curve, slew);
+  chassis.pid_wait_until(angle);
+}
+
+void turn(double angle, int speed, bool slew = false) {
+  last_set_angle = angle;
+  chassis.pid_turn_set(angle + added_angle, speed, slew);
+  chassis.pid_wait_until(angle);
+}
+
+void drive(double distance, int speed, bool slew = false) {
+  if (chassis.aPID.target != last_set_angle) {
+    chassis.pid_drive_toggle(false);
+    chassis.pid_turn_set(last_set_angle, 0, false);
+  }
+  chassis.pid_drive_set(distance + added_distance, speed, slew);
+  chassis.pid_drive_toggle(true);
+  chassis.pid_wait_until(distance);
+}
+
 // Auton Functions
 
 // void close_awp() {

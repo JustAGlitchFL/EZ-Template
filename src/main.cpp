@@ -212,12 +212,6 @@ void opcontrol() {
       ledPulse(0xff0000);
     }
 
-
-    if (master.get_digital_new_press(DIGITAL_A)) {
-      hang.set(true);
-      ledPulse(0x00FF00);
-    }
-
     // Read joystick inputs for intake control
     if (master.get_digital(DIGITAL_R1)) {
         intake.move_velocity(200); 
@@ -229,21 +223,35 @@ void opcontrol() {
 
     // Read joystick inputs for kicker control
     if (master.get_digital(DIGITAL_L2)) {
-        kicker1.move_velocity(200);
-        kicker2.move_velocity(-200);
+        kicker1.move_velocity(-200);
+        kicker2.move_velocity(200);
         ledPulse(0x00FF00);
     } else {
         kicker1.move_velocity(0);
         kicker2.move_velocity(0);
         ledPulse(0xff0000);
     }
+    
+    if (master.get_digital_new_press(DIGITAL_DOWN)) {
+      hang.set(false);
+      kicker1.move_velocity(200);
+      kicker2.move_velocity(-200);
+      ledPulse(0x00FF00);
+    }
+
     // hang
     if (master.get_digital_new_press(DIGITAL_LEFT)) {
       hang.set(false);
-      kicker1.move_velocity(-200);
-      kicker2.move_velocity(200);
+      kicker1.move_velocity(200);
+      kicker2.move_velocity(-200);
       ledPulse(0x00FF00);
     }
+
+      if (master.get_digital_new_press(DIGITAL_A)) {
+      hang.set(true);
+      ledPulse(0xff0000);
+    }
+
     pros::delay(ez::util::DELAY_TIME); // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
   }
   }
