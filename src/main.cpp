@@ -186,17 +186,18 @@ void opcontrol() {
     // chassis.opcontrol_tank();
     chassis.opcontrol_arcade_standard(ez::SPLIT);
     
-    if (master.get_digital(DIGITAL_X) && LEDToggle == false) {
+    if (master.get_digital_new_press(DIGITAL_X) && LEDToggle == false) {
+        pros::delay(100);
         leftInnerLEDs.set_all(0x000FF);
         leftOuterLEDs.set_all(0x000FF);
         rightInnerLEDs.set_all(0x000FF);
         rightOuterLEDs.set_all(0x000FF);
-        pros::delay(100);
+        pros::delay(200);
         leftInnerLEDs.set_all(0xff0000);
         leftOuterLEDs.set_all(0xff0000);
         rightInnerLEDs.set_all(0xff0000);
         rightOuterLEDs.set_all(0xff0000);
-        } else if (master.get_digital(DIGITAL_X) && LEDToggle == true) {
+        } else if (master.get_digital_new_press(DIGITAL_X) && LEDToggle == true) {
         ledInitialize();
         LEDToggle = false;
       }
