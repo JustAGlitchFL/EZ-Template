@@ -242,8 +242,8 @@ void opcontrol() {
     // hang
     if (master.get_digital_new_press(DIGITAL_LEFT)) {
       hang.set(false);
-      kicker1.move_velocity(200);
-      kicker2.move_velocity(-200);
+      kicker1.move_velocity(-200);
+      kicker2.move_velocity(200);
       ledPulse(0x00FF00);
     }
 
