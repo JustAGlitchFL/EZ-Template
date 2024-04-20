@@ -183,11 +183,10 @@ void opcontrol() {
     //   chassis.pid_tuner_iterate(); // Allow PID Tuner to iterate
     // } 
 
-    // chassis.opcontrol_tank(); // Tank control
+    // chassis.opcontrol_tank();
     chassis.opcontrol_arcade_standard(ez::SPLIT);
     
-    if (master.get_digital(DIGITAL_X)) {
-      if (LEDToggle = false) {
+    if (master.get_digital(DIGITAL_X) && LEDToggle == false) {
         leftInnerLEDs.set_all(0x000FF);
         leftOuterLEDs.set_all(0x000FF);
         rightInnerLEDs.set_all(0x000FF);
@@ -197,13 +196,11 @@ void opcontrol() {
         leftOuterLEDs.set_all(0xff0000);
         rightInnerLEDs.set_all(0xff0000);
         rightOuterLEDs.set_all(0xff0000);
-      } else {
-        if (LEDToggle = true) {
+        } else if (master.get_digital(DIGITAL_X) && LEDToggle == true) {
         ledInitialize();
         LEDToggle = false;
       }
-      }
-    } // Standard split arcade
+    }
 
   // Trigger the selected autonomous routine
     if (master.get_digital_new_press(DIGITAL_B))  {
@@ -212,20 +209,20 @@ void opcontrol() {
 
     // pneumatics
     if (master.get_digital(DIGITAL_RIGHT)) {
-      left_wing.set(true);
       ledPulse(0xFFFFF);
+      left_wing.set(true);
     } else {
       left_wing.set(false);
     }
     if (master.get_digital(DIGITAL_Y)) {
-      right_wing.set(true);
       ledPulse(0xFFFFF);
+      right_wing.set(true);
     } else {
       right_wing.set(false);
     }
     if (master.get_digital(DIGITAL_L1)) {
-      back_wing.set(true);
       ledPulse(0xFFFFF);
+      back_wing.set(true);
     } else {
       back_wing.set(false);
     }
@@ -248,26 +245,19 @@ void opcontrol() {
         kicker1.move_velocity(0);
         kicker2.move_velocity(0);
     }
-    
-    if (master.get_digital_new_press(DIGITAL_DOWN)) {
-      hang.set(false);
-      kicker1.move_velocity(200);
-      kicker2.move_velocity(-200);
-    }
 
     // hang
     if (master.get_digital_new_press(DIGITAL_LEFT)) {
-      hang.set(false);
       kicker1.move_velocity(-200);
       kicker2.move_velocity(200);
+      hang.set(false);
     }
 
-      if (master.get_digital_new_press(DIGITAL_A)) {
+    if (master.get_digital_new_press(DIGITAL_A)) {
       hang.set(true);
       ledPulse(0xFFFFF);
     }
 
     pros::delay(ez::util::DELAY_TIME); // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
-  }
   }
 }
