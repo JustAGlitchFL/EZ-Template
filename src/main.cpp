@@ -18,7 +18,7 @@ auto leftInnerLEDs = sylib::Addrled(22, 6, 16);
 auto rightOuterLEDs = sylib::Addrled(22, 8, 17);
 auto rightInnerLEDs = sylib::Addrled(22, 7, 16);
 
-bool LEDToggle = false;
+bool code2 = false;
 
 // Chassis constructor
 ez::Drive chassis (
@@ -44,17 +44,17 @@ ez::Drive chassis (
 );
 
 void ledInitialize() {
-  leftOuterLEDs.gradient(0xFFFFFF, 0xADD8E6);
-  leftInnerLEDs.gradient(0xFFFFFF, 0xADD8E6);
-  rightOuterLEDs.gradient(0xFFFFFF, 0xADD8E6);
-  rightInnerLEDs.gradient(0xFFFFFF, 0xADD8E6);
+  leftOuterLEDs.gradient(0xFFFFFF, 0x0000ff);
+  leftInnerLEDs.gradient(0xFFFFFF, 0x0000ff);
+  rightOuterLEDs.gradient(0xFFFFFF, 0x0000ff);
+  rightInnerLEDs.gradient(0xFFFFFF, 0x0000ff);
 }
 
 void ledCycle() {
-  leftOuterLEDs.cycle(*leftOuterLEDs, 15);
-  leftInnerLEDs.cycle(*leftInnerLEDs, 15);
-  rightInnerLEDs.cycle(*rightInnerLEDs, 15);
-  rightOuterLEDs.cycle(*rightOuterLEDs, 15);
+  leftOuterLEDs.cycle(*leftOuterLEDs, 5);
+  leftInnerLEDs.cycle(*leftInnerLEDs, 5);
+  rightInnerLEDs.cycle(*rightInnerLEDs, 5);
+  rightOuterLEDs.cycle(*rightOuterLEDs, 5);
 }
 
 void ledPulse(int hexCode) {
@@ -64,18 +64,53 @@ void ledPulse(int hexCode) {
   rightInnerLEDs.pulse(hexCode, 2, 10);
 }
 
+void ledKill() {
+  leftOuterLEDs.set_all(0x000000);
+  leftInnerLEDs.set_all(0x000000);
+  rightOuterLEDs.set_all(0x000000);
+  rightInnerLEDs.set_all(0x000000);
+}
+
+void setAll(int hexCode) {
+  leftOuterLEDs.set_all(hexCode);
+  leftInnerLEDs.set_all(hexCode);
+  rightOuterLEDs.set_all(hexCode);
+  rightInnerLEDs.set_all(hexCode);
+}
+
+void police(void* param) {
+ while (true)
+ {
+  setAll(0x0000FF);
+  pros::delay(50);
+  leftOuterLEDs.set_all(0xFF0000);
+  rightOuterLEDs.set_all(0xFF0000);
+  pros::delay(10);
+  setAll(0x0000FF);
+  leftInnerLEDs.set_all(0xFF0000);
+  rightInnerLEDs.set_all(0xFF0000);
+  pros::delay(10);
+ }
+ 
+}
+
+
+
+
 
 void initialize() {
   
   pros::delay(500); // Stop the user from doing anything while legacy ports configure
 
   // Configure your chassis controls
+  chassis.opcontrol_drive_activebrake_set(0);
   chassis.opcontrol_curve_default_set(4, 4); // Defaults for curve. If using tank, only the first parameter is used. (Comment this line out if you have an SD card!)  
   default_constants(); // Set the drive to your own constants from autons.cpp!
 
   sylib::initialize();
 
-  ledInitialize();
+  ledKill();
+
 
   // Autonomous Selector using LLEMU
   ez::as::auton_selector.autons_add({
@@ -93,7 +128,19 @@ void initialize() {
   // Initialize chassis and auton selector
   chassis.initialize();
   ez::as::initialize();
+  leftOuterLEDs.set_pixel(0xFFFF00, 0);
+  leftOuterLEDs.set_pixel(0xFFFF00, 16);
+  rightOuterLEDs.set_pixel(0xFFFF00, 0);
+  rightOuterLEDs.set_pixel(0xFFFF00, 16);
   master.rumble(".");
+  ledKill();
+  pros::delay(100);
+  leftOuterLEDs.set_pixel(0xFFFF00, 0);
+  leftOuterLEDs.set_pixel(0xFFFF00, 16);
+  rightOuterLEDs.set_pixel(0xFFFF00, 0);
+  rightOuterLEDs.set_pixel(0xFFFF00, 16);
+  master.rumble(".");
+  ledKill();
 }
 
 
@@ -105,9 +152,18 @@ void initialize() {
  */
 void disabled() {
   // . . .
-
-  ledInitialize();
-
+  while (true) {
+    leftOuterLEDs.set_all(0x0000FF);
+    leftInnerLEDs.set_all(0x0000FF);
+    rightInnerLEDs.set_all(0x0000FF);
+    rightOuterLEDs.set_all(0x0000FF);
+    pros::delay(200);
+    leftOuterLEDs.set_all(0xffffff);
+    leftInnerLEDs.set_all(0xffffff);
+    rightInnerLEDs.set_all(0xffffff);
+    rightOuterLEDs.set_all(0xffffff);
+    pros::delay(200);
+  }
 }
 
 
@@ -166,6 +222,9 @@ void autonomous() {
 void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
+  pros::Task policetask(police, (void*)"PROS", TASK_PRIORITY_DEFAULT, TASK_STACK_DEPTH_DEFAULT, "Police");
+  policetask.suspend();
+
   ledInitialize();
   ledCycle();
 
@@ -187,24 +246,11 @@ void opcontrol() {
 
     chassis.opcontrol_arcade_standard(ez::SPLIT);
 
-      if (master.get_digital_new_press(DIGITAL_X) && LEDToggle == false) {
-        pros::delay(100);
-        leftInnerLEDs.set_all(0x000FF);
-        leftOuterLEDs.set_all(0x000FF);
-        rightInnerLEDs.set_all(0x000FF);
-        rightOuterLEDs.set_all(0x000FF);
-        pros::delay(200);
-        leftInnerLEDs.set_all(0xff0000);
-        leftOuterLEDs.set_all(0xff0000);
-        rightInnerLEDs.set_all(0xff0000);
-        rightOuterLEDs.set_all(0xff0000);
-        }
-        
-      if (master.get_digital_new_press(DIGITAL_X) && LEDToggle == true) {
-        ledInitialize();
-        ledCycle();
-        LEDToggle = false;
-      }
+    if (master.get_digital_new_press(DIGITAL_X) && policetask.get_state() == pros::E_TASK_STATE_SUSPENDED) {
+      policetask.resume();
+    } else if (master.get_digital_new_press(DIGITAL_X) && policetask.get_state() == pros::E_TASK_STATE_RUNNING) {
+      policetask.suspend();        
+    }
 
   // Trigger the selected autonomous routine
     if (master.get_digital_new_press(DIGITAL_B))  {
@@ -242,9 +288,9 @@ void opcontrol() {
 
     // Read joystick inputs for kicker control
     if (master.get_digital(DIGITAL_L2)) {
-        kicker1.move_velocity(-200);
-        kicker2.move_velocity(200);
         ledPulse(0xFFFFF);
+        kicker1.move_velocity(200);
+        kicker2.move_velocity(200);
     } else {
         kicker1.move_velocity(0);
         kicker2.move_velocity(0);
@@ -253,7 +299,7 @@ void opcontrol() {
     // hang
     if (master.get_digital_new_press(DIGITAL_LEFT)) {
       kicker1.move_velocity(-200);
-      kicker2.move_velocity(200);
+      kicker2.move_velocity(-200);
       hang.set(false);
     }
 
