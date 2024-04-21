@@ -44,10 +44,10 @@ ez::Drive chassis (
 );
 
 void ledInitialize() {
-  leftOuterLEDs.gradient(0x5EE3FE, 0xCD29FF);
-  leftInnerLEDs.gradient(0x5EE3FE, 0xCD29FF);
-  rightOuterLEDs.gradient(0x5EE3FE, 0xCD29FF);
-  rightInnerLEDs.gradient(0x5EE3FE, 0xCD29FF);
+  leftOuterLEDs.gradient(0xFFFFFF, 0xADD8E6);
+  leftInnerLEDs.gradient(0xFFFFFF, 0xADD8E6);
+  rightOuterLEDs.gradient(0xFFFFFF, 0xADD8E6);
+  rightInnerLEDs.gradient(0xFFFFFF, 0xADD8E6);
 }
 
 void ledCycle() {
@@ -167,6 +167,7 @@ void opcontrol() {
   // This is preference to what you like to drive on
   chassis.drive_brake_set(MOTOR_BRAKE_COAST);
   ledInitialize();
+  ledCycle();
 
   while (true) {
     
@@ -197,11 +198,11 @@ void opcontrol() {
         leftOuterLEDs.set_all(0xff0000);
         rightInnerLEDs.set_all(0xff0000);
         rightOuterLEDs.set_all(0xff0000);
-        } else if (master.get_digital_new_press(DIGITAL_X) && LEDToggle == true) {
-        leftOuterLEDs.gradient(0x5EE3FE, 0xCD29FF);
-        leftInnerLEDs.gradient(0x5EE3FE, 0xCD29FF);
-        rightOuterLEDs.gradient(0x5EE3FE, 0xCD29FF);
-        rightInnerLEDs.gradient(0x5EE3FE, 0xCD29FF);
+        }
+        
+      if (master.get_digital_new_press(DIGITAL_X) && LEDToggle == true) {
+        ledInitialize();
+        ledCycle();
         LEDToggle = false;
       }
 
@@ -259,6 +260,8 @@ void opcontrol() {
     if (master.get_digital_new_press(DIGITAL_A)) {
       hang.set(true);
       ledPulse(0xFFFFF);
+      kicker1.move_velocity(0);
+      kicker2.move_velocity(0);
     }
 
     pros::delay(ez::util::DELAY_TIME); // This is used for timer calculations!  Keep this ez::util::DELAY_TIME
