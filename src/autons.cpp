@@ -1,5 +1,16 @@
 #include "main.h"
 
+// Motor definitions
+pros::Motor intakeauton(6, pros::E_MOTOR_GEAR_200, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor kicker1auton(16, pros::E_MOTOR_GEAR_200, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor kicker2auton(17, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
+
+// Pneumatics
+ez::Piston left_wingauton('B');
+ez::Piston right_wingauton('C');
+ez::Piston back_wingauton('A');
+ez::Piston hangauton('D');
+
 /////
 // For installation, upgrading, documentations and tutorials, check out our website!
 // https://ez-robotics.github.io/EZ-Template/
@@ -82,16 +93,16 @@ void close_score() {
 
 void far_6ball() {
   drive(36 , DRIVE_SPEED);
-  intake.move_velocity(200);
+  intakeauton.move_velocity(200);
   drive(3, DRIVE_SPEED);
-  intake.move_velocity(0);
+  intakeauton.move_velocity(0);
   
   
   turn(45, TURN_SPEED);
   drive(13, DRIVE_SPEED);
-  intake.move_velocity(200);
+  intakeauton.move_velocity(200);
   drive(3, DRIVE_SPEED);
-  intake.move_velocity(0);
+  intakeauton.move_velocity(0);
 
 
 
