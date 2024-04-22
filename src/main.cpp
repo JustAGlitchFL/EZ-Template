@@ -6,8 +6,6 @@ pros::Motor kicker1(16, pros::E_MOTOR_GEAR_200, false, pros::E_MOTOR_ENCODER_DEG
 pros::Motor kicker2(17, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
 
 // Pneumatics
-
-// Pneumatics
 ez::Piston left_wing('B');
 ez::Piston right_wing('C');
 ez::Piston back_wing('A');
@@ -134,6 +132,7 @@ void initialize() {
   rightOuterLEDs.set_pixel(0xFFFF00, 0);
   rightOuterLEDs.set_pixel(0xFFFF00, 16);
   master.rumble(".");
+  pros::delay(100);
   ledKill();
   pros::delay(100);
   leftOuterLEDs.set_pixel(0xFFFF00, 0);
@@ -141,6 +140,7 @@ void initialize() {
   rightOuterLEDs.set_pixel(0xFFFF00, 0);
   rightOuterLEDs.set_pixel(0xFFFF00, 16);
   master.rumble(".");
+  pros::delay(100);
   ledKill();
 }
 
@@ -154,6 +154,7 @@ void initialize() {
 void disabled() {
   // . . .
   while (true) {
+    pros::delay(200);
     leftOuterLEDs.set_all(0x0000FF);
     leftInnerLEDs.set_all(0x0000FF);
     rightInnerLEDs.set_all(0x0000FF);
@@ -163,7 +164,7 @@ void disabled() {
     leftInnerLEDs.set_all(0xffffff);
     rightInnerLEDs.set_all(0xffffff);
     rightOuterLEDs.set_all(0xffffff);
-    pros::delay(200);
+
   }
 }
 
@@ -246,9 +247,11 @@ void opcontrol() {
 
     chassis.opcontrol_arcade_standard(ez::SPLIT);
 
-    if (master.get_digital_new_press(DIGITAL_X) && policetask.get_state() == pros::E_TASK_STATE_SUSPENDED) {
+    bool policetogglebutton = master.get_digital_new_press(DIGITAL_X);
+
+    if (policetogglebutton && policetask.get_state() == pros::E_TASK_STATE_SUSPENDED) {
       policetask.resume();
-    } else if (master.get_digital_new_press(DIGITAL_X) && policetask.get_state() == pros::E_TASK_STATE_RUNNING) {
+    } else if (policetogglebutton && policetask.get_state() == pros::E_TASK_STATE_RUNNING) {
       policetask.suspend();
       ledInitialize();
       ledCycle();   
@@ -301,8 +304,6 @@ void opcontrol() {
         kicker1.move_velocity(0);
         kicker2.move_velocity(0);
     }
-
-
 
     if (master.get_digital_new_press(DIGITAL_UP)) {
       hang.set(true);
