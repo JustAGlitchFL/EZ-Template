@@ -122,7 +122,8 @@ void initialize() {
     // Auton("Combine all 3 movements", combining_movements),
     // Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
 
-    Auton("Test Auton", test_auton),
+    // Auton("Test Auton", test_auton),
+    Auton("Close AWP", close_awp),
   });
 
   // Initialize chassis and auton selector
@@ -237,19 +238,20 @@ void opcontrol() {
       //  When enabled:
       //  * use A and Y to increment / decrement the constants
       //  * use the arrow keys to navigate the constants
-    //   if (master.get_digital_new_press(DIGITAL_X)) 
-    //     chassis.pid_tuner_toggle();
+      if (master.get_digital_new_press(DIGITAL_X)) 
+        chassis.pid_tuner_toggle();
         
-    //   chassis.pid_tuner_iterate(); // Allow PID Tuner to iterate
-    // } 
-    }
+      chassis.pid_tuner_iterate(); // Allow PID Tuner to iterate
+    } 
 
     chassis.opcontrol_arcade_standard(ez::SPLIT);
 
     if (master.get_digital_new_press(DIGITAL_X) && policetask.get_state() == pros::E_TASK_STATE_SUSPENDED) {
       policetask.resume();
     } else if (master.get_digital_new_press(DIGITAL_X) && policetask.get_state() == pros::E_TASK_STATE_RUNNING) {
-      policetask.suspend();        
+      policetask.suspend();
+      ledInitialize();
+      ledCycle();   
     }
 
   // Trigger the selected autonomous routine
@@ -291,19 +293,18 @@ void opcontrol() {
         ledPulse(0xFFFFF);
         kicker1.move_velocity(200);
         kicker2.move_velocity(200);
+    } else if (master.get_digital(DIGITAL_DOWN)) {
+      kicker1.move_velocity(-200);
+      kicker2.move_velocity(-200);
+      hang.set(false);
     } else {
         kicker1.move_velocity(0);
         kicker2.move_velocity(0);
     }
 
-    // hang
-    if (master.get_digital_new_press(DIGITAL_LEFT)) {
-      kicker1.move_velocity(-200);
-      kicker2.move_velocity(-200);
-      hang.set(false);
-    }
 
-    if (master.get_digital_new_press(DIGITAL_A)) {
+
+    if (master.get_digital_new_press(DIGITAL_UP)) {
       hang.set(true);
       ledPulse(0xFFFFF);
       kicker1.move_velocity(0);

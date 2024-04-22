@@ -15,7 +15,7 @@ const int SWING_SPEED = 90;
 ///
 void default_constants() {
   chassis.pid_heading_constants_set(3, 0, 20);
-  chassis.pid_drive_constants_set(10, 0, 100);
+  chassis.pid_drive_constants_set(10, 0, 0);
   chassis.pid_turn_constants_set(3, 0, 20);
   chassis.pid_swing_constants_set(5, 0, 30);
 
@@ -53,26 +53,28 @@ void drive(double distance, int speed, bool slew = false) {
 
 // Auton Functions
 
-// void close_awp() {
-//   NULL;
-// }
+void close_awp() {
+  drive(-10, DRIVE_SPEED);
+  swing(ez::RIGHT_SWING, 45, SWING_SPEED, 45);
+  drive(-10, DRIVE_SPEED);
+}
 
-// void close_score() {
-//   NULL;
-// }
+void close_score() {
+  NULL;
+}
 
-// void far_6ball() {
-//   NULL;
-// }
+void far_6ball() {
+  NULL;
+}
 
-// void far_awp() {
-//   NULL;
-// }
+void far_awp() {
+  NULL;
+}
 
 /* examples
 ///
 // Drive Example
-///
+
 void drive_example() {
   // The first parameter is target inches
   // The second parameter is max speed the robot will drive at
@@ -240,7 +242,5 @@ void interfered_example() {
 */
 
 void test_auton() {
-  drive(12, DRIVE_SPEED, true);
-  turn(45, TURN_SPEED);
-  drive(12, DRIVE_SPEED, true);
+  drive(48, DRIVE_SPEED);
 }
