@@ -80,7 +80,7 @@ void police(void* param) {
  while (true)
  {
   setAll(0x0000FF);
-  pros::delay(30);
+  pros::delay(150);
   leftOuterLEDs.set_all(0xFF0000);
   rightOuterLEDs.set_all(0xFF0000);
   pros::delay(10);
@@ -234,16 +234,16 @@ void opcontrol() {
     
     // PID Tuner
     // After you find values that you're happy with, you'll have to set them in auton.cpp
-    if (!pros::competition::is_connected()) { 
-      // Enable / Disable PID Tuner
-      //  When enabled:
-      //  * use A and Y to increment / decrement the constants
-      //  * use the arrow keys to navigate the constants
-      if (master.get_digital_new_press(DIGITAL_X)) 
-        chassis.pid_tuner_toggle();
+    // if (!pros::competition::is_connected()) { 
+    //   // Enable / Disable PID Tuner
+    //   //  When enabled:
+    //   //  * use A and Y to increment / decrement the constants
+    //   //  * use the arrow keys to navigate the constants
+    //   if (master.get_digital_new_press(DIGITAL_X)) 
+    //     chassis.pid_tuner_toggle();
         
-      chassis.pid_tuner_iterate(); // Allow PID Tuner to iterate
-    } 
+    //   chassis.pid_tuner_iterate(); // Allow PID Tuner to iterate
+    // } 
 
     chassis.opcontrol_arcade_standard(ez::SPLIT);
 
