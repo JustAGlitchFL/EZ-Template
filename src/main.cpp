@@ -82,7 +82,7 @@ void police(void* param) {
  while (true)
  {
   setAll(0x0000FF);
-  pros::delay(50);
+  pros::delay(30);
   leftOuterLEDs.set_all(0xFF0000);
   rightOuterLEDs.set_all(0xFF0000);
   pros::delay(10);
