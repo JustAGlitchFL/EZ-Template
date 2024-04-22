@@ -67,50 +67,50 @@ void drive(double distance, int speed, bool slew = false) {
 void close_awp() {
   drive(-10, DRIVE_SPEED);
   swing(ez::RIGHT_SWING, 45, SWING_SPEED, 45);
-  drive(-10, DRIVE_SPEED);
+  drive(-14, DRIVE_SPEED);
 
-  drive(10, DRIVE_SPEED);
-  swing(ez::RIGHT_SWING, 0, SWING_SPEED, 45);
-  drive(10, DRIVE_SPEED);
+  drive(8, DRIVE_SPEED);
+  turn(0, TURN_SPEED);
 
-  //extend back wing
+  drive(6, DRIVE_SPEED);
+  back_wingauton.set(true);
 
-  swing(ez::RIGHT_SWING, -35, SWING_SPEED, 45);
+  // swing(ez::RIGHT_SWING, -35, SWING_SPEED, 45);
   
-  //retract back wing
+  // back_wing.set(false);
 
-  drive(10, DRIVE_SPEED);
-  turn(-45, TURN_SPEED);
-  drive(25, DRIVE_SPEED);
+  // drive(10, DRIVE_SPEED);
+  // turn(-45, TURN_SPEED);
+  // drive(25, DRIVE_SPEED);
 
-  //extend back wing
+  // back_wing.set(true);
 }
 
-void close_score() {
-  NULL;
-}
-//intake.movevelocity(200 or -200)
+// void close_score() {
+//   NULL;
+// }
+// //intake.movevelocity(200 or -200)
 
-void far_6ball() {
-  drive(36 , DRIVE_SPEED);
-  intakeauton.move_velocity(200);
-  drive(3, DRIVE_SPEED);
-  intakeauton.move_velocity(0);
+// void far_6ball() {
+//   drive(36 , DRIVE_SPEED);
+//   intakeauton.move_velocity(200);
+//   drive(3, DRIVE_SPEED);
+//   intakeauton.move_velocity(0);
   
   
-  turn(45, TURN_SPEED);
-  drive(13, DRIVE_SPEED);
-  intakeauton.move_velocity(200);
-  drive(3, DRIVE_SPEED);
-  intakeauton.move_velocity(0);
+//   turn(45, TURN_SPEED);
+//   drive(13, DRIVE_SPEED);
+//   intakeauton.move_velocity(200);
+//   drive(3, DRIVE_SPEED);
+//   intakeauton.move_velocity(0);
 
 
 
-}
+// }
 
-void far_awp() {
-  NULL;
-}
+// void far_awp() {
+//   NULL;
+// }
 
 /* examples
 ///
@@ -281,7 +281,3 @@ void interfered_example() {
 // Make your own autonomous functions here!
 // . . .
 */
-
-void test_auton() {
-  drive(48, DRIVE_SPEED);
-}
