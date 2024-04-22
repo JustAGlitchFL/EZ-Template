@@ -57,14 +57,44 @@ void close_awp() {
   drive(-10, DRIVE_SPEED);
   swing(ez::RIGHT_SWING, 45, SWING_SPEED, 45);
   drive(-10, DRIVE_SPEED);
+
+  drive(10, DRIVE_SPEED);
+  swing(ez::RIGHT_SWING, 0, SWING_SPEED, 45);
+  drive(10, DRIVE_SPEED);
+
+  //extend back wing
+
+  swing(ez::RIGHT_SWING, -35, SWING_SPEED, 45);
+  
+  //retract back wing
+
+  drive(10, DRIVE_SPEED);
+  turn(-45, TURN_SPEED);
+  drive(25, DRIVE_SPEED);
+
+  //extend back wing
 }
 
 void close_score() {
   NULL;
 }
+//intake.movevelocity(200 or -200)
 
 void far_6ball() {
-  NULL;
+  drive(36 , DRIVE_SPEED);
+  intake.move_velocity(200);
+  drive(3, DRIVE_SPEED);
+  intake.move_velocity(0);
+  
+  
+  turn(45, TURN_SPEED);
+  drive(13, DRIVE_SPEED);
+  intake.move_velocity(200);
+  drive(3, DRIVE_SPEED);
+  intake.move_velocity(0);
+
+
+
 }
 
 void far_awp() {
