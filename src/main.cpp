@@ -121,7 +121,7 @@ void initialize() {
     // Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
 
     // Auton("Test Auton", test_auton),
-    Auton("Close AWP", close_awp),
+    Auton("Far 6 Ball", far_6ball),
   });
 
   // Initialize chassis and auton selector
@@ -260,6 +260,7 @@ void opcontrol() {
   // Trigger the selected autonomous routine
     if (master.get_digital_new_press(DIGITAL_B))  {
       autonomous();
+      pros::delay(1000);
     }
 
     // pneumatics

@@ -75,15 +75,14 @@ void close_awp() {
   drive(6, DRIVE_SPEED);
   back_wingauton.set(true);
 
-  // swing(ez::RIGHT_SWING, -35, SWING_SPEED, 45);
-  
-  // back_wing.set(false);
-
-  // drive(10, DRIVE_SPEED);
-  // turn(-45, TURN_SPEED);
-  // drive(25, DRIVE_SPEED);
-
-  // back_wing.set(true);
+  drive(6, DRIVE_SPEED);
+  turn(-70, TURN_SPEED);
+  back_wingauton.set(false);
+  turn(-180, TURN_SPEED);
+  swing(ez::LEFT_SWING, -225, SWING_SPEED, 30);
+  drive(-36, DRIVE_SPEED);
+  back_wingauton.set(true);
+  drive(-5, DRIVE_SPEED);
 }
 
 // void close_score() {
@@ -91,22 +90,24 @@ void close_awp() {
 // }
 // //intake.movevelocity(200 or -200)
 
-// void far_6ball() {
-//   drive(36 , DRIVE_SPEED);
-//   intakeauton.move_velocity(200);
-//   drive(3, DRIVE_SPEED);
-//   intakeauton.move_velocity(0);
+void far_6ball() {
+  //chassis.drive_imu_reset(-103);
+  drive(44, DRIVE_SPEED);
+  back_wingauton.set(true);
+
+  turn(238, TURN_SPEED);
+  intakeauton.move_velocity(200);
+  swing(ez::LEFT_SWING, 283, SWING_SPEED, 60);
   
-  
-//   turn(45, TURN_SPEED);
-//   drive(13, DRIVE_SPEED);
-//   intakeauton.move_velocity(200);
-//   drive(3, DRIVE_SPEED);
-//   intakeauton.move_velocity(0);
+  drive(-15, DRIVE_SPEED);
+  swing(ez::LEFT_SWING, 373, SWING_SPEED, 10);
+  turn(103, TURN_SPEED);
+  drive(-30, DRIVE_SPEED);
 
 
 
-// }
+
+}
 
 // void far_awp() {
 //   NULL;
