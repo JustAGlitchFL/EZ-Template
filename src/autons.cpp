@@ -2,7 +2,7 @@
 
 // Motor definitions
 pros::Motor intakeauton(6, pros::E_MOTOR_GEAR_200, false, pros::E_MOTOR_ENCODER_DEGREES);
-pros::Motor kicker1auton(16, pros::E_MOTOR_GEAR_200, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor kicker1auton(4, pros::E_MOTOR_GEAR_200, false, pros::E_MOTOR_ENCODER_DEGREES);
 pros::Motor kicker2auton(17, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
 
 // Pneumatics
@@ -80,7 +80,7 @@ void close_awp() {
   back_wingauton.set(false);
   turn(-180, TURN_SPEED);
   swing(ez::LEFT_SWING, -225, SWING_SPEED, 30);
-  drive(-36, DRIVE_SPEED);
+  drive(-30, DRIVE_SPEED);
   back_wingauton.set(true);
   drive(-5, DRIVE_SPEED);
 }
@@ -92,17 +92,39 @@ void close_awp() {
 
 void far_6ball() {
   //chassis.drive_imu_reset(-103);
-  drive(44, DRIVE_SPEED);
-  back_wingauton.set(true);
+  // drive(44, DRIVE_SPEED);
+  // back_wingauton.set(true);
 
-  turn(238, TURN_SPEED);
-  intakeauton.move_velocity(200);
-  swing(ez::LEFT_SWING, 283, SWING_SPEED, 60);
+  // turn(238, TURN_SPEED);
+  // intakeauton.move_velocity(200);
+  // swing(ez::LEFT_SWING, 283, SWING_SPEED, 60);
   
-  drive(-15, DRIVE_SPEED);
-  swing(ez::LEFT_SWING, 373, SWING_SPEED, 10);
-  turn(103, TURN_SPEED);
+  // drive(-15, DRIVE_SPEED);
+  // swing(ez::LEFT_SWING, 373, SWING_SPEED, 10);
+  // turn(103, TURN_SPEED);
+  // drive(-30, DRIVE_SPEED);
+
+  intakeauton.move_velocity(200);
+  drive(6, DRIVE_SPEED);
+  drive(-36, DRIVE_SPEED);
+  turn(-45,TURN_SPEED);
+
+  drive(-10, DRIVE_SPEED);
+  back_wingauton.set(true);
+  turn(-90,TURN_SPEED);
+  drive(-14, DRIVE_SPEED);
+  drive(8, DRIVE_SPEED);
+  //bar touch which is mirrored close
+  turn(-45, TURN_SPEED);
+
+  drive(12, DRIVE_SPEED);
+  turn(0, TURN_SPEED);
+  turn(-115, TURN_SPEED);
+  swing(ez::LEFT_SWING, -180, SWING_SPEED, 30);
   drive(-30, DRIVE_SPEED);
+  back_wingauton.set(true);
+  drive(-5, DRIVE_SPEED);
+  
 
 
 

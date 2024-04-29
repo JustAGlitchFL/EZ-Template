@@ -2,7 +2,7 @@
 
 // Motor definitions
 pros::Motor intake(6, pros::E_MOTOR_GEAR_200, false, pros::E_MOTOR_ENCODER_DEGREES);
-pros::Motor kicker1(16, pros::E_MOTOR_GEAR_200, false, pros::E_MOTOR_ENCODER_DEGREES);
+pros::Motor kicker1(4, pros::E_MOTOR_GEAR_200, false, pros::E_MOTOR_ENCODER_DEGREES);
 pros::Motor kicker2(17, pros::E_MOTOR_GEAR_200, true, pros::E_MOTOR_ENCODER_DEGREES);
 
 // Pneumatics
@@ -120,7 +120,7 @@ void initialize() {
     // Auton("Combine all 3 movements", combining_movements),
     // Auton("Interference\n\nAfter driving forward, robot performs differently if interfered or not.", interfered_example),
 
-    // Auton("Test Auton", test_auton),
+    Auton("Close AWP", close_awp),
     Auton("Far 6 Ball", far_6ball),
   });
 
@@ -152,20 +152,8 @@ void initialize() {
  * the robot is enabled, this task will exit.
  */
 void disabled() {
-  // . . .
-  while (true) {
-    pros::delay(200);
-    leftOuterLEDs.set_all(0x0000FF);
-    leftInnerLEDs.set_all(0x0000FF);
-    rightInnerLEDs.set_all(0x0000FF);
-    rightOuterLEDs.set_all(0x0000FF);
-    pros::delay(200);
-    leftOuterLEDs.set_all(0xffffff);
-    leftInnerLEDs.set_all(0xffffff);
-    rightInnerLEDs.set_all(0xffffff);
-    rightOuterLEDs.set_all(0xffffff);
-
-  }
+  ledInitialize();
+  ledCycle();
 }
 
 
@@ -294,21 +282,19 @@ void opcontrol() {
 
     // Read joystick inputs for kicker control
     if (master.get_digital(DIGITAL_L2)) {
-        ledPulse(0xFFFFF);
-        kicker1.move_velocity(200);
-        kicker2.move_velocity(200);
+      kicker1.move_velocity(200);
+      kicker2.move_velocity(200);
     } else if (master.get_digital(DIGITAL_DOWN)) {
       kicker1.move_velocity(-200);
       kicker2.move_velocity(-200);
       hang.set(false);
-    } else {
-        kicker1.move_velocity(0);
-        kicker2.move_velocity(0);
+    } else if (master.get_digital(DIGITAL_UP)) {
+        hang.set(true);
+      
+      kicker1.move_velocity(-200);
+      kicker2.move_velocity(-200);
     }
-
-    if (master.get_digital_new_press(DIGITAL_UP)) {
-      hang.set(true);
-      ledPulse(0xFFFFF);
+    else {
       kicker1.move_velocity(0);
       kicker2.move_velocity(0);
     }
